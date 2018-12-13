@@ -62,7 +62,7 @@ before_install:
     tar xfz openssl-1.0.2o.tar.gz &> /dev/null;
     cd openssl-1.0.2o;
     CFLAGS="-fPIC" ./config &> /dev/null;
-    TARGET_ARCH="" make &> /dev/null;
+    CFLAGS="-fPIC" TARGET_ARCH="" make &> /dev/null;
     sudo make install &> /dev/null;
 
   - wget https://curl.haxx.se/download/curl-7.63.0.tar.gz;
