@@ -102,7 +102,8 @@
       ],
 
       "cflags": [
-        "-Wall"
+        "-Wno-deprecated-declarations",
+        "-Wno-missing-field-initializers"
       ],
 
       "conditions": [
