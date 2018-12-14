@@ -103,7 +103,8 @@
 
       "cflags": [
         "-Wno-deprecated-declarations",
-        "-Wno-missing-field-initializers"
+        "-Wno-missing-field-initializers",
+        "-fPIC"
       ],
 
       "conditions": [

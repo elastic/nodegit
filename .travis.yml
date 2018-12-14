@@ -54,24 +54,31 @@ addons:
 
 
 before_install:
-  - export CC=clang
+  - export CC="clang -fPIC"
   - export CXX=clang++
   - export npm_config_clang=1
   - export JOBS=4
-  - wget https://www.openssl.org/source/openssl-1.0.2o.tar.gz;
-    tar xfz openssl-1.0.2o.tar.gz &> /dev/null;
-    cd openssl-1.0.2o;
-    CFLAGS="-fPIC" ./config &> /dev/null;
-    CFLAGS="-fPIC" TARGET_ARCH="" make &> /dev/null;
-    sudo make install &> /dev/null;
+  - if [ "$TRAVIS_OS_NAME" == "linux" ]; then
+      cd $HOME;
+      wget https://www.openssl.org/source/openssl-1.0.2o.tar.gz;
+      tar xfz openssl-1.0.2o.tar.gz;
+      cd openssl-1.0.2o;
+      CFLAGS="-fPIC -Wno-deprecated-declarations -Wno-missing-field-initializers" ./config;
+      CFLAGS="-fPIC -Wno-deprecated-declarations -Wno-missing-field-initializers" TARGET_ARCH="" make;
+      sudo make install;
+    fi
 
-  - wget https://curl.haxx.se/download/curl-7.63.0.tar.gz;
-    tar xvfz curl-7.63.0.tar.gz &> /dev/null;
-    cd curl-7.63.0;
-    LIBS="-ldl -lpthread" ./configure --disable-shared --with-ssl=/usr/local/ssl/;
-    make &> /dev/null;
-    sudo make install &> /dev/null;
+  - if [ "$TRAVIS_OS_NAME" == "linux" ]; then
+      cd $HOME;
+      wget https://curl.haxx.se/download/curl-7.63.0.tar.gz;
+      tar xfz curl-7.63.0.tar.gz;
+      cd curl-7.63.0;
+      CFLAGS="-fPIC -Wno-deprecated-declarations -Wno-missing-field-initializers" LIBS="-ldl -lpthread" ./configure --disable-shared --with-ssl=/usr/local/ssl/;
+      CFLAGS="-fPIC -Wno-deprecated-declarations -Wno-missing-field-initializers" make;
+      sudo make install;
+    fi
 
+  - cd $TRAVIS_BUILD_DIR
   - if [ -z "$TRAVIS_TAG" ] && [ "$EXTENDED_TESTING" == "true" ]; then
       export GYP_DEFINES="coverage=1 use_obsolete_asm=true";
       export npm_config_clang=0;
@@ -105,14 +112,11 @@ script:
 
 after_success:
   - if [ -n "$TRAVIS_TAG" ] && [ "$EXTENDED_TESTING" != "true" ] && [ "$DEPLOY_DOCUMENTATION" != "true" ] && [ "$SKIP_DEPLOY" != "true" ]; then
+      cd $TRAVIS_BUILD_DIR
       npm install -g node-pre-gyp;
       npm install -g aws-sdk;
       node lifecycleScripts/clean;
       node-pre-gyp package --target_arch=$TARGET_ARCH;
       node-pre-gyp publish --target_arch=$TARGET_ARCH;
-    fi
-
-  - if [ "$TRAVIS_PULL_REQUEST" == "false" ] && [ -n "$TRAVIS_TAG" ] && [ "$DEPLOY_DOCUMENTATION" == "true" ]; then
-      .travis/deploy-docs.sh;
     fi
 
