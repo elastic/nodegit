@@ -103,7 +103,8 @@
 
       "cflags": [
         "-Wno-deprecated-declarations",
-        "-Wno-missing-field-initializers"
+        "-Wno-missing-field-initializers",
+        "-fPIC"
       ],
 
       "conditions": [
@@ -187,6 +188,9 @@
             "/usr/local/lib/libcurl.a",
             "/usr/local/ssl/lib/libssl.a",
             "/usr/local/ssl/lib/libcrypto.a"
+          ],
+          "ldflags": [
+            "-static-libstdc++"
           ]
         }
         ],
