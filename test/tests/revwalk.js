@@ -330,7 +330,7 @@ describe("Revwalk", function() {
         var walker = repo.createRevWalk();
         walker.sorting(NodeGit.Revwalk.SORT.TIME);
         walker.push(headCommit);
-        return walker.fileHistoryWalk(fileNameA, -1,5);
+        return walker.fileHistoryWalk(fileNameA, -1, 5);
       })
       .then(function(results) {
         assert.equal(results[0].status, NodeGit.Diff.DELTA.RENAMED);
