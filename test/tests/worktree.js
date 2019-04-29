@@ -1,6 +1,5 @@
 var path = require("path");
 var assert = require("assert");
-var fse = require("fs-extra");
 var local = path.join.bind(path, __dirname);
 
 describe("Worktree", function() {
@@ -32,18 +31,17 @@ describe("Worktree", function() {
     });
   });
 
-  after(function() {
-    return fse.remove(clonePath).catch(function(err) {
-      console.log(err);
-
-      throw err;
-    });
-  });
-
   it("can create worktree", function() {
     return Worktree.add(this.repository, "workspace", worktreePath, {})
       .then(function(wt) {
         assert.ok(wt instanceof Worktree);
       });
+  });
+
+  it("can open a worktree repository", function() {
+    return Repository.open(worktreePath).then(function(repo) {
+      assert.ok(repo instanceof Repository);
+      assert.ok(repo.isWorktree());
+    });
   });
 });
