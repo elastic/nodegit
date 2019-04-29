@@ -60,9 +60,9 @@ from_repo = Nan::ObjectWrap::Unwrap<GitRepository>(info[0]->ToObject())->GetValu
           baton->path = from_path;
 // start convert_from_v8 block
   // Create a git_worktree_add_options with the default value
-  const git_worktree_add_options from_opts = {1, 0, NULL};
+  const git_worktree_add_options* from_opts = NULL;
 // end convert_from_v8 block
-          baton->opts = &from_opts;
+          baton->opts = from_opts;
 
   Nan::Callback *callback = new Nan::Callback(v8::Local<Function>::Cast(info[4]));
   AddWorker *worker = new AddWorker(baton, callback);
@@ -73,8 +73,8 @@ from_repo = Nan::ObjectWrap::Unwrap<GitRepository>(info[0]->ToObject())->GetValu
           worker->SaveToPersistent("name", info[1]->ToObject());
         if (!info[2]->IsUndefined() && !info[2]->IsNull())
           worker->SaveToPersistent("path", info[2]->ToObject());
-        if (!info[3]->IsUndefined() && !info[3]->IsNull())
-          worker->SaveToPersistent("opts", info[3]->ToObject());
+        // if (!info[3]->IsUndefined() && !info[3]->IsNull())
+        //   worker->SaveToPersistent("opts", info[3]->ToObject());
 
   AsyncLibgit2QueueWorker(worker);
   return;
