@@ -41,9 +41,20 @@ describe("Worktree", function() {
   });
 
   it("can create worktree", function() {
-    return Worktree.add(this.repository, "workspace", worktreePath, {})
-      .then(function(wt) {
+    return Worktree.add(
+      this.repository,
+      "workspace",
+      worktreePath,
+      { lock: 0, version: 1 }
+    ).then(function(wt) {
         assert.ok(wt instanceof Worktree);
       });
+  });
+
+  it("can open a worktree repository", function() {
+    return Repository.open(worktreePath).then(function(repo) {
+      assert.ok(repo instanceof Repository);
+      assert.ok(repo.isWorktree());
+    });
   });
 });
