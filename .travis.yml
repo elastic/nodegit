@@ -112,7 +112,7 @@ script:
     fi
 
 after_success:
-  - echo $node_pre_gyp_bucket
+  - set -x;
   - set +e;
   - if [ -n "$TRAVIS_TAG" ] && [ "$EXTENDED_TESTING" != "true" ] && [ "$DEPLOY_DOCUMENTATION" != "true" ] && [ "$SKIP_DEPLOY" != "true" ]; then
       cd $TRAVIS_BUILD_DIR
