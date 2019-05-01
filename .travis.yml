@@ -114,6 +114,7 @@ script:
 after_success:
   - if [ -n "$TRAVIS_TAG" ] && [ "$EXTENDED_TESTING" != "true" ] && [ "$DEPLOY_DOCUMENTATION" != "true" ] && [ "$SKIP_DEPLOY" != "true" ]; then
       set -x;
+      cd $TRAVIS_BUILD_DIR;
       npm install -g node-pre-gyp;
       npm install -g aws-sdk;
       node lifecycleScripts/clean;
