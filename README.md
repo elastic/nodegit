@@ -5,7 +5,7 @@
 
 Linux & macOS | Windows | Coverage | Dependencies
 ------------- | ------- | -------- | -------------
-[![Build Status Travis](https://api.travis-ci.org/nodegit/nodegit.svg?branch=master)](https://travis-ci.org/nodegit/nodegit) | [![Build Status AppVeyor](https://ci.appveyor.com/api/projects/status/e5a5q75l9yfhnfv2?svg=true)](https://ci.appveyor.com/project/timbranyen/nodegit) | [![Coveralls](https://coveralls.io/repos/nodegit/nodegit/badge.svg)](https://coveralls.io/r/nodegit/nodegit) | [![Dependencies](https://david-dm.org/nodegit/nodegit.svg)](https://david-dm.org/nodegit/nodegit)
+[![Build Status Travis](https://api.travis-ci.org/elastic/nodegit.svg?branch=master)](https://travis-ci.org/elastic/nodegit) | [![Build Status AppVeyor](https://ci.appveyor.com/api/projects/status/2mkblygy6c1p2b8f?svg=true)](https://ci.appveyor.com/project/spacedragon/nodegit) | [![Coveralls](https://coveralls.io/repos/nodegit/nodegit/badge.svg)](https://coveralls.io/r/nodegit/nodegit) | [![Dependencies](https://david-dm.org/nodegit/nodegit.svg)](https://david-dm.org/nodegit/nodegit)
 
 **Stable (libgit2@v0.27.3): 0.27.3**
 
