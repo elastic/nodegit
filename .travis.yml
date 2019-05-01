@@ -55,7 +55,7 @@ addons:
 
 
 before_install:
-  - export CC="clang -fPIC"
+  - export CC="clang -fPIC -Wno-deprecated-declarations -Wno-missing-field-initializers"
   - export CXX=clang++
   - export npm_config_clang=1
   - export JOBS=4
@@ -64,8 +64,8 @@ before_install:
       wget https://www.openssl.org/source/openssl-1.0.2o.tar.gz;
       tar xfz openssl-1.0.2o.tar.gz;
       cd openssl-1.0.2o;
-      CFLAGS="-fPIC -Wno-deprecated-declarations -Wno-missing-field-initializers" ./config;
-      CFLAGS="-fPIC -Wno-deprecated-declarations -Wno-missing-field-initializers" TARGET_ARCH="" make;
+      ./config;
+      TARGET_ARCH="" make;
       sudo make install;
     fi
 
@@ -74,8 +74,8 @@ before_install:
       wget https://curl.haxx.se/download/curl-7.63.0.tar.gz;
       tar xfz curl-7.63.0.tar.gz;
       cd curl-7.63.0;
-      CFLAGS="-fPIC -Wno-deprecated-declarations -Wno-missing-field-initializers" LIBS="-ldl -lpthread" ./configure --disable-shared --with-ssl=/usr/local/ssl/;
-      CFLAGS="-fPIC -Wno-deprecated-declarations -Wno-missing-field-initializers" make;
+      LIBS="-ldl -lpthread" ./configure --disable-shared --with-ssl=/usr/local/ssl/;
+      make;
       sudo make install;
     fi
 
@@ -112,6 +112,8 @@ script:
     fi
 
 after_success:
+  - echo $node_pre_gyp_bucket
+  - set +e;
   - if [ -n "$TRAVIS_TAG" ] && [ "$EXTENDED_TESTING" != "true" ] && [ "$DEPLOY_DOCUMENTATION" != "true" ] && [ "$SKIP_DEPLOY" != "true" ]; then
       cd $TRAVIS_BUILD_DIR
       npm install -g node-pre-gyp;

@@ -115,8 +115,9 @@
 
               "WARNING_CFLAGS": [
                 "-Wno-unused-variable",
+                "-Wno-deprecated-declarations",
                 "-Wint-conversions",
-                "-Wmissing-field-initializers",
+                "-Wno-missing-field-initializers",
                 "-Wno-c++11-extensions"
               ]
             }
