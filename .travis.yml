@@ -113,11 +113,15 @@ script:
 
 after_success:
   - if [ -n "$TRAVIS_TAG" ] && [ "$EXTENDED_TESTING" != "true" ] && [ "$DEPLOY_DOCUMENTATION" != "true" ] && [ "$SKIP_DEPLOY" != "true" ]; then
-      set -x;
+      echo 'start'
       npm install -g node-pre-gyp;
+      echo 'install 1'
       npm install -g aws-sdk;
+      echo 'install 2'
       node lifecycleScripts/clean;
+      echo 'clean'
       node-pre-gyp package --target_arch=$TARGET_ARCH;
+    echo 'package'
       node-pre-gyp publish --target_arch=$TARGET_ARCH;
     fi
 
