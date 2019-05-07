@@ -4222,6 +4222,12 @@
         }
       }
     },
+    "worktree_prune_options": {
+      "hasConstructor": true
+    },
+    "worktree_add_options": {
+      "hasConstructor": true
+    },
     "writestream": {
       "cType": "git_writestream",
       "needsForwardDeclaration": false,
