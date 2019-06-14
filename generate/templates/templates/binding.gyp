@@ -178,6 +178,7 @@
             "/usr/local/ssl/lib/libssl.a",
             "/usr/local/ssl/lib/libcrypto.a"
           ],
+          "defines": ["_FIND_ROOT_CERTS=1"],
           "ldflags": [
             "-static-libstdc++"
           ],
