@@ -1,6 +1,6 @@
 sudo: false
 # update to Xenial in April 2019; Trusty will be EOL, Xenial new minimum supported OS version
-dist: trusty
+dist: Xenial
 
 branches:
   only:
@@ -9,6 +9,7 @@ branches:
 
 compiler: clang
 language: node_js
+services: docker
 
 # Stage order; the default stage is "test", which in our case is actually building and deploying
 stages:
@@ -41,58 +42,19 @@ jobs:
 git:
   depth: 5
 
-addons:
-  apt:
-    sources:
-      - ubuntu-toolchain-r-test
-    packages:
-      - build-essential
-      - clang
-      - libssl-dev
-      - gcc-4.9-multilib
-      - g++-4.9-multilib
-      - lcov
-
 
 before_install:
-  - export CC="clang -fPIC -Wno-deprecated-declarations -Wno-missing-field-initializers"
-  - export CXX=clang++
-  - export npm_config_clang=1
-  - export JOBS=4
-  - if [ "$TRAVIS_OS_NAME" == "linux" ]; then
-      cd $HOME;
-      wget https://www.openssl.org/source/openssl-1.0.2o.tar.gz;
-      tar xfz openssl-1.0.2o.tar.gz;
-      cd openssl-1.0.2o;
-      ./config;
-      TARGET_ARCH="" make;
-      sudo make install;
-    fi
-
-  - if [ "$TRAVIS_OS_NAME" == "linux" ]; then
-      cd $HOME;
-      wget https://curl.haxx.se/download/curl-7.63.0.tar.gz;
-      tar xfz curl-7.63.0.tar.gz;
-      cd curl-7.63.0;
-      LIBS="-ldl -lpthread" ./configure --disable-shared --with-ssl=/usr/local/ssl/;
-      make;
-      sudo make install;
-    fi
-
   - cd $TRAVIS_BUILD_DIR
-  - if [ -z "$TRAVIS_TAG" ] && [ "$EXTENDED_TESTING" == "true" ]; then
-      export GYP_DEFINES="coverage=1 use_obsolete_asm=true";
-      export npm_config_clang=0;
-      wget http://downloads.sourceforge.net/ltp/lcov-1.10.tar.gz;
-      tar xfz lcov-1.10.tar.gz;
-    else
-      export GYP_DEFINES="use_obsolete_asm=true";
-    fi
+
 
 install:
   - set -e;
-  - travis_retry npm install;
-
+  - if [ "$TRAVIS_OS_NAME" == "linux" ]; then
+      docker run -v `pwd`:/build --rm spacedragon/centos6_builder:v2 /build/build.sh;
+    fi
+  - if [ "$TRAVIS_OS_NAME" == "osx" ]; then
+      travis_retry npm install;
+    fi
 # This is a random private key used purely for testing.
 before_script:
   - echo -e "Host *\n\tStrictHostKeyChecking no\n" >> ~/.ssh/config
